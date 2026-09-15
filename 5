@@ -1,0 +1,106 @@
+#find the height of a binary tree using recursion
+
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+# Find height of binary tree
+def height(root):
+    if root is None:
+        return 0
+
+    left_height = height(root.left)
+    right_height = height(root.right)
+
+    return 1 + max(left_height, right_height)
+
+
+# Create the binary tree
+root = Node(10)
+
+root.left = Node(20)
+root.right = Node(30)
+
+root.left.left = Node(40)
+root.left.right = Node(50)
+
+root.right.right = Node(60)
+
+
+print("Height of Binary Tree:", height(root))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pygame
+import random
+
+pygame.init()
+
+screen = pygame.display.set_mode((500, 500))
+pygame.display.set_caption("Catch the Ball")
+
+player = pygame.Rect(220, 450, 60, 20)
+ball = pygame.Rect(random.randint(0, 480), 0, 20, 20)
+
+speed = 5
+score = 0
+clock = pygame.time.Clock()
+
+running = True
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_LEFT] and player.x > 0:
+        player.x -= speed
+
+    if keys[pygame.K_RIGHT] and player.x < 440:
+        player.x += speed
+
+    ball.y += 5
+
+    if ball.colliderect(player):
+        score += 1
+        ball.x = random.randint(0, 480)
+        ball.y = 0
+
+    if ball.y > 500:
+        ball.x = random.randint(0, 480)
+        ball.y = 0
+
+    screen.fill((20, 20, 40))
+
+    pygame.draw.rect(screen, (0, 200, 255), player)
+    pygame.draw.circle(screen, (255, 80, 80), ball.center, 10)
+
+    font = pygame.font.Font(None, 30)
+    text = font.render("Score: " + str(score), True, (255, 255, 255))
+    screen.blit(text, (10, 10))
+
+    pygame.display.update()
+    clock.tick(60)
+
+pygame.quit()
